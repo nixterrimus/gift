@@ -258,6 +258,20 @@ func Grayscale() Filter {
 	}
 }
 
+func AdjustChannels(redPercent float32, greenPercent float32, bluePercent float32) Filter{
+	rr := 1.0 + redPercent / 100.0
+	gg := 1.0 + greenPercent / 100.0
+  bb := 1.0 + bluePercent / 100.0
+	return &colorFilter{
+		fn: func(px pixel) pixel {
+			r := px.R*rr
+			g := px.G*gg
+			b := px.B*bb
+			return pixel{r, g, b, px.A}
+		},
+	}
+}
+
 // Sepia creates a filter that changes the tint of an image and returns the adjusted image.
 // It takes a parameter for how much the image should be adjusted, that must be in the range (0, 100)
 //
